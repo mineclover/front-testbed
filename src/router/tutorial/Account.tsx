@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { supabase } from './supabaseClient'
+import { supabase } from '../../supabaseClient'
+import { Database } from '../../types/supabase'
 
 type Props = {
   session: any
@@ -8,7 +9,7 @@ export default function Account({ session }: Props) {
   const [loading, setLoading] = useState(true)
   const [username, setUsername] = useState<string>('')
   const [website, setWebsite] = useState<string>('')
-  const [avatar_url, setAvatarUrl] = useState(null)
+  const [avatar_url, setAvatarUrl] = useState<string | null>('')
 
   useEffect(() => {
     async function getProfile() {
@@ -24,8 +25,8 @@ export default function Account({ session }: Props) {
       if (error) {
         console.warn(error)
       } else if (data) {
-        setUsername(data.username)
-        setWebsite(data.website)
+        data.username && setUsername(data.username)
+        data.website && setWebsite(data.website)
         setAvatarUrl(data.avatar_url)
       }
 

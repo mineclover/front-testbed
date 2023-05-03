@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { supabase } from './supabaseClient'
+import { supabase } from '../supabaseClient'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
-import { Database } from './types/supabase'
+import { Database } from '../types/supabase'
 import '@picocss/pico/css/pico.min.css'
 
 function App() {
@@ -54,7 +54,11 @@ function App() {
           Sign Out
         </button>
       )}
-      <h1>hello</h1>
+      <h1>로그인으로 개별 권한을 줄 수 있는지 테스트</h1>
+      <p>mineclover@naver.com, 111111</p>
+      <p>clover@example.com, 222222</p>
+      <p>clover@example.com으로 로그인 할 때엔 아래에 추가 메세지를 띄우지 않는다</p>
+
       <button onClick={getCountries}>Get Countries</button>
       {countries.map((country) => (
         <li key={country.id}>
