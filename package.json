@@ -6,9 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --cache --fix --ext .ts,.tsx",
     "preview": "vite preview",
-    "update-types": "npx supabase gen types typescript --project-id \"dblntvvagfqxjblwlfxt\" > src/types/supabase.ts"
+    "update-types": "npx supabase gen types typescript --project-id \"dblntvvagfqxjblwlfxt\" > src/types/supabase.ts",
+    "pretest": "npm run lint",
+    "format": "prettier --loglevel warn --write \"**/*.{ts,tsx,css,md}\"",
+    "posttest": "npm run format",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@picocss/pico": "^1.5.10",
@@ -37,5 +41,12 @@
     "supabase": "^1.52.3",
     "typescript": "^5.0.2",
     "vite": "^4.3.2"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "eslint --cache --fix",
+    "*.{ts,tsx,css,md}": "prettier --write"
   }
 }
