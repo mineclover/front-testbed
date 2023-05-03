@@ -1,30 +1,34 @@
-import { useState } from 'react'
-import { supabase } from '../../supabaseClient'
+import { useState } from 'react';
+import { supabase } from '../../supabaseClient';
+import { AuthError } from '@supabase/supabase-js';
 
 export default function Auth() {
-  const [loading, setLoading] = useState(false)
-  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithOtp({ email })
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({ email });
 
     if (error) {
-      // @ts-ignore
-      alert(error.error_description || error.message)
+      // 공식문서에서는 error.error_description 를 사용함
+      // alert(error.error_description || error.message);
+      alert(error.message);
     } else {
-      alert('Check your email for the login link!')
+      alert('Check your email for the login link!');
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <div className="row flex flex-center">
       <div className="col-6 form-widget">
         <h1 className="header">Supabase + React</h1>
-        <p className="description">Sign in via magic link with your email below</p>
+        <p className="description">
+          Sign in via magic link with your email below
+        </p>
         <form className="form-widget" onSubmit={handleLogin}>
           <div>
             <input
@@ -44,5 +48,5 @@ export default function Auth() {
         </form>
       </div>
     </div>
-  )
+  );
 }

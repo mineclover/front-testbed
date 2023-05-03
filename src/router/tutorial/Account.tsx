@@ -1,46 +1,46 @@
-import { useState, useEffect } from 'react'
-import { supabase } from '../../supabaseClient'
-import { Database } from '../../types/supabase'
+import { useState, useEffect } from 'react';
+import { supabase } from '../../supabaseClient';
+import { Database } from '../../types/supabase';
 
 type Props = {
-  session: any
-}
+  session: any;
+};
 export default function Account({ session }: Props) {
-  const [loading, setLoading] = useState(true)
-  const [username, setUsername] = useState<string>('')
-  const [website, setWebsite] = useState<string>('')
-  const [avatar_url, setAvatarUrl] = useState<string | null>('')
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState<string>('');
+  const [website, setWebsite] = useState<string>('');
+  const [avatar_url, setAvatarUrl] = useState<string | null>('');
 
   useEffect(() => {
     async function getProfile() {
-      setLoading(true)
-      const { user } = session
+      setLoading(true);
+      const { user } = session;
 
-      let { data, error } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select(`username, website, avatar_url`)
         .eq('id', user.id)
-        .single()
+        .single();
 
       if (error) {
-        console.warn(error)
+        console.warn(error);
       } else if (data) {
-        data.username && setUsername(data.username)
-        data.website && setWebsite(data.website)
-        setAvatarUrl(data.avatar_url)
+        data.username && setUsername(data.username);
+        data.website && setWebsite(data.website);
+        setAvatarUrl(data.avatar_url);
       }
 
-      setLoading(false)
+      setLoading(false);
     }
 
-    getProfile()
-  }, [session])
+    getProfile();
+  }, [session]);
 
   async function updateProfile(event: { preventDefault: () => void }) {
-    event.preventDefault()
+    event.preventDefault();
 
-    setLoading(true)
-    const { user } = session
+    setLoading(true);
+    const { user } = session;
 
     const updates = {
       id: user.id,
@@ -48,14 +48,14 @@ export default function Account({ session }: Props) {
       website,
       avatar_url,
       updated_at: new Date(),
-    }
+    };
 
-    let { error } = await supabase.from('profiles').upsert(updates)
+    const { error } = await supabase.from('profiles').upsert(updates);
 
     if (error) {
-      alert(error.message)
+      alert(error.message);
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -76,20 +76,33 @@ export default function Account({ session }: Props) {
       </div>
       <div>
         <label htmlFor="website">Website</label>
-        <input id="website" type="url" value={website || ''} onChange={(e) => setWebsite(e.target.value)} />
+        <input
+          id="website"
+          type="url"
+          value={website || ''}
+          onChange={(e) => setWebsite(e.target.value)}
+        />
       </div>
 
       <div>
-        <button className="button block primary" type="submit" disabled={loading}>
+        <button
+          className="button block primary"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? 'Loading ...' : 'Update'}
         </button>
       </div>
 
       <div>
-        <button className="button block" type="button" onClick={() => supabase.auth.signOut()}>
+        <button
+          className="button block"
+          type="button"
+          onClick={() => supabase.auth.signOut()}
+        >
           Sign Out
         </button>
       </div>
     </form>
-  )
+  );
 }
