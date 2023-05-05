@@ -2,16 +2,22 @@ import {
   createBrowserRouter,
   Route,
   createRoutesFromElements,
-  Navigate,
 } from 'react-router-dom';
-import Tutorial from './router/tutorial';
-import LoginTest from './router/loginTest';
+
+import Home from './router/Home';
+import Header from './router/Header';
+import { indexRouteList, namedRouteList } from './AutoRouter';
 
 const router = createBrowserRouter(
-  createRoutesFromElements([
-    <Route path="/01" element={<Tutorial />} />,
-    <Route path="/02" element={<LoginTest />} />,
-  ])
+  createRoutesFromElements(
+    <Route>
+      <Route element={<Header />}>
+        {...indexRouteList()}
+        {...namedRouteList()}
+      </Route>
+      <Route path="/*" element={<Home />} />
+    </Route>
+  )
 );
 
 export { router };
