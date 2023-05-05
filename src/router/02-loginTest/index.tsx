@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
-import { AuthSession } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { Database } from '../../types/supabase';
 import '@picocss/pico/css/pico.min.css';
+import useSession from '../../hooks/useSession';
 
 const App = () => {
   const [countries, setCountries] = useState<
@@ -13,27 +13,11 @@ const App = () => {
   const [permission, setPermission] = useState<
     Database['public']['Tables']['profiles']['Row'][]
   >([]);
-  const [session, setSession] = useState<AuthSession>();
-  console.log('countries', countries);
-  console.log('permission', permission);
-
-  useEffect(() => {
-    supabase.auth
-      .getSession()
-      .then(({ data: { session } }) => session && setSession(session));
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      session && setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const { user } = useSession();
 
   useEffect(() => {
     getCountries();
-  }, [session]);
+  }, [user]);
 
   async function getCountries() {
     const { data, error } = await supabase.from('method').select();
@@ -46,10 +30,10 @@ const App = () => {
     data2 && setPermission(data2);
     console.log('Permission data', error2);
   }
-
+  console.log('session', user);
   return (
     <ul>
-      {session === null ? (
+      {user === undefined ? (
         <Auth
           supabaseClient={supabase}
           appearance={{ theme: ThemeSupa }}
@@ -61,7 +45,6 @@ const App = () => {
             supabase.auth.signOut();
             setCountries([]);
             setPermission([]);
-            setSession(undefined);
           }}
         >
           Sign Out

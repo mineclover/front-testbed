@@ -9,26 +9,6 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      keyword: {
-        Row: {
-          id: number;
-          keyword: string;
-          name: string | null;
-          parents: string | null;
-        };
-        Insert: {
-          id: number;
-          keyword: string;
-          name?: string | null;
-          parents?: string | null;
-        };
-        Update: {
-          id?: number;
-          keyword?: string;
-          name?: string | null;
-          parents?: string | null;
-        };
-      };
       method: {
         Row: {
           created_at: string | null;
@@ -79,6 +59,26 @@ export interface Database {
           id?: number;
           username?: string | null;
           website?: string | null;
+        };
+      };
+      search: {
+        Row: {
+          created_at: string | null;
+          description: string | null;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          description?: string | null;
+          id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string | null;
+          description?: string | null;
+          id?: string;
+          user_id?: string;
         };
       };
     };
