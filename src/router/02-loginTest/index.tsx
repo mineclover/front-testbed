@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import { AuthSession } from '@supabase/supabase-js';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { Database } from '../types/supabase';
+import { Database } from '../../types/supabase';
 import '@picocss/pico/css/pico.min.css';
 
-function App() {
+const App = () => {
   const [countries, setCountries] = useState<
     Database['public']['Tables']['method']['Row'][]
   >([]);
@@ -89,6 +89,6 @@ function App() {
       <h1>{permission[1] && permission[1].username}</h1>
     </ul>
   );
-}
+};
 
 export default App;

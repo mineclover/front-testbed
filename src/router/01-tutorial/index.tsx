@@ -4,7 +4,7 @@ import { AuthSession } from '@supabase/supabase-js';
 import Auth from './Auth';
 import Account from './Account';
 
-function App() {
+const App = () => {
   const [session, setSession] = useState<AuthSession>();
 
   useEffect(() => {
@@ -26,6 +26,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;

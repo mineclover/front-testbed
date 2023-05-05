@@ -1,15 +1,22 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../supabaseClient';
+import { AuthSession } from '@supabase/supabase-js';
 import { Database } from '../../types/supabase';
 
 type Props = {
-  session: any;
+  session: AuthSession;
 };
-export default function Account({ session }: Props) {
+
+const Account = ({ session }: Props) => {
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState<string>('');
-  const [website, setWebsite] = useState<string>('');
-  const [avatar_url, setAvatarUrl] = useState<string | null>('');
+  const [username, setUsername] =
+    useState<Database['public']['Tables']['profiles']['Update']['username']>(
+      ''
+    );
+  const [website, setWebsite] =
+    useState<Database['public']['Tables']['profiles']['Update']['website']>('');
+  const [avatar_url, setAvatarUrl] =
+    useState<Database['public']['Tables']['profiles']['Update']['website']>('');
 
   useEffect(() => {
     async function getProfile() {
@@ -27,7 +34,7 @@ export default function Account({ session }: Props) {
       } else if (data) {
         data.username && setUsername(data.username);
         data.website && setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
+        data.avatar_url && setAvatarUrl(data.avatar_url);
       }
 
       setLoading(false);
@@ -40,10 +47,9 @@ export default function Account({ session }: Props) {
     event.preventDefault();
 
     setLoading(true);
-    const { user } = session;
 
     const updates = {
-      id: user.id,
+      id: 1,
       username,
       website,
       avatar_url,
@@ -105,4 +111,6 @@ export default function Account({ session }: Props) {
       </div>
     </form>
   );
-}
+};
+
+export default Account;
